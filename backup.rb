@@ -24,6 +24,6 @@ repositories.each do |repo|
     puts "Fetching #{name}"
     git "--git-dir=#{path}", 'fetch'
   else
-    git 'clone', '--bare', url, path
+    git 'clone', '--mirror', url, path
   end
 end
