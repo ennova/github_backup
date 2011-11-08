@@ -32,3 +32,30 @@ env GITHUB_USERNAME=foo GITHUB_PASSWORD=secret GITHUB_REPOSITORY_TYPE=public GIT
   - `GITHUB_BACKUP_PATH`
 
     Directory to store the repositories. Default `repositories`.
+
+### Scheduling With Cron
+
+Create a file in the same directory as `backup.rb` with the following (replace or remove the variables as needed):
+
+**backup_cron.sh**
+
+```sh
+export PATH=/usr/bin:/bin:/sbin
+cd "$(dirname "$0")"
+# this sets up RVM is you're using it
+[[ -s ~/.rvm/scripts/rvm ]] && source ~/.rvm/scripts/rvm
+source .rvmrc
+
+export GITHUB_USERNAME='username'
+export GITHUB_PASSWORD='password'
+export GITHUB_ORGANIZATION='organization' # optional
+export GIT_SSH='path/to/ssh_key'          # ssh key for github authorization
+exec ruby backup.rb
+```
+
+Next type `crontab -e` into terminal and copy in the following line:
+
+`05 * * * * ~/Documents/github_backup/backup_cron.sh > ~/Documents/github_backup/backup_cron.log 2>&1`
+
+This will start the backup script on the 5th minute of every hour. If you have any
+problems take a look at the log file in the `github_backup` folder.
