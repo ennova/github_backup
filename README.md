@@ -49,8 +49,17 @@ source .rvmrc
 export GITHUB_USERNAME='username'
 export GITHUB_PASSWORD='password'
 export GITHUB_ORGANIZATION='organization' # optional
-export GIT_SSH='path/to/ssh_key'          # ssh key for github authorization
+export GIT_SSH="$(pwd)/ssh_build"         # ssh key for github authorization
 exec ruby backup.rb
+```
+
+Use this script tell git what ssh key to use.
+
+**ssh_build**
+
+```sh
+#!/bin/bash -e
+exec ssh -i "$(dirname "$0")/id_rsa" "$@" # path to your ssh key
 ```
 
 Next type `crontab -e` into terminal and copy in the following line:
